@@ -161,15 +161,13 @@
 \newcommand{\ufpelsectionpage}{%
   \begin{tikzpicture}[remember picture, overlay]
     \fill[ufpelDarkBlue] (current page.north west) rectangle (current page.south east);
-    % Short gold accent line below section name
-    \fill[ufpelGold]
-      ([yshift=-0.3cm, xshift=-2cm]current page.center) rectangle
-      ([yshift=-0.15cm, xshift=2cm]current page.center);
   \end{tikzpicture}%
   \vfill%
   \begin{center}
     {\fontsize{11}{13}\selectfont\color{ufpelGold}\MakeUppercase{\secname}\par}%
-    \vskip18pt%
+    \vskip8pt%
+    {\color{ufpelGold}\rule{4cm}{2pt}\par}%
+    \vskip12pt%
     {\fontsize{26}{30}\selectfont\bfseries\color{white}\insertsection\par}%
   \end{center}
   \vfill%
