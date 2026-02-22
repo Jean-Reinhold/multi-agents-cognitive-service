@@ -157,18 +157,20 @@
   \vskip1cm%
 }
 
-% ─── Section Pages — auto-inserted, modern centered layout ───────────────────
+% ─── Section Pages — modern centered layout ───────────────────────────────────
 \newcommand{\ufpelsectionpage}{%
   \begin{tikzpicture}[remember picture, overlay]
     \fill[ufpelDarkBlue] (current page.north west) rectangle (current page.south east);
-    \fill[ufpelGold] ([yshift=-0.48\paperheight]current page.north west)
-      rectangle ([yshift=-0.52\paperheight]current page.north east);
+    % Short gold accent line below section name
+    \fill[ufpelGold]
+      ([yshift=-0.3cm, xshift=-2cm]current page.center) rectangle
+      ([yshift=-0.15cm, xshift=2cm]current page.center);
   \end{tikzpicture}%
   \vfill%
   \begin{center}
-    {\fontsize{10}{12}\selectfont\color{ufpelGold}\MakeUppercase{\secname}\par}%
-    \vskip8pt%
-    {\fontsize{22}{26}\selectfont\bfseries\color{white}\insertsection\par}%
+    {\fontsize{11}{13}\selectfont\color{ufpelGold}\MakeUppercase{\secname}\par}%
+    \vskip18pt%
+    {\fontsize{26}{30}\selectfont\bfseries\color{white}\insertsection\par}%
   \end{center}
   \vfill%
 }
@@ -182,10 +184,11 @@
   }%
 }
 
-% ─── Block Environments — modern tcolorbox cards with left accent ────────────
-% Override Beamer blocks with tcolorbox-based versions
+% ─── Block Environments — tcolorbox with left accent, native title ───────────
+% The key: use tcolorbox's built-in title (coltitle + separator),
+% NOT attach boxed title. Title renders inline above body content.
 
-% Standard block
+% Standard block (dark blue accent)
 \renewenvironment{block}[1]{%
   \begin{tcolorbox}[
     enhanced,
@@ -196,22 +199,18 @@
     boxrule=0pt,
     left=6pt, right=6pt, top=4pt, bottom=4pt,
     before skip=4pt, after skip=4pt,
-    fonttitle=\usebeamerfont{block title}\color{ufpelDarkBlue},
     title={#1},
-    attach boxed title to top left={yshift=-\tcboxedtitleheight},
-    boxed title style={
-      colback=ufpelLightBlue!12,
-      colframe=ufpelLightBlue!12,
-      boxrule=0pt,
-      sharp corners,
-      left=0pt, right=0pt, top=1pt, bottom=2pt,
-    },
+    coltitle=ufpelDarkBlue,
+    fonttitle=\bfseries,
+    toptitle=2pt, bottomtitle=2pt,
+    colbacktitle=ufpelLightBlue!12,
+    boxed title style={empty},
   ]%
 }{%
   \end{tcolorbox}%
 }
 
-% Alert block
+% Alert block (red accent)
 \renewenvironment{alertblock}[1]{%
   \begin{tcolorbox}[
     enhanced,
@@ -222,22 +221,18 @@
     boxrule=0pt,
     left=6pt, right=6pt, top=4pt, bottom=4pt,
     before skip=4pt, after skip=4pt,
-    fonttitle=\usebeamerfont{block title}\color{ufpelRed},
     title={#1},
-    attach boxed title to top left={yshift=-\tcboxedtitleheight},
-    boxed title style={
-      colback=ufpelRed!5,
-      colframe=ufpelRed!5,
-      boxrule=0pt,
-      sharp corners,
-      left=0pt, right=0pt, top=1pt, bottom=2pt,
-    },
+    coltitle=ufpelRed,
+    fonttitle=\bfseries,
+    toptitle=2pt, bottomtitle=2pt,
+    colbacktitle=ufpelRed!5,
+    boxed title style={empty},
   ]%
 }{%
   \end{tcolorbox}%
 }
 
-% Example block
+% Example block (gold accent)
 \renewenvironment{exampleblock}[1]{%
   \begin{tcolorbox}[
     enhanced,
@@ -248,16 +243,12 @@
     boxrule=0pt,
     left=6pt, right=6pt, top=4pt, bottom=4pt,
     before skip=4pt, after skip=4pt,
-    fonttitle=\usebeamerfont{block title}\color{ufpelDarkBlue},
     title={#1},
-    attach boxed title to top left={yshift=-\tcboxedtitleheight},
-    boxed title style={
-      colback=ufpelGold!8,
-      colframe=ufpelGold!8,
-      boxrule=0pt,
-      sharp corners,
-      left=0pt, right=0pt, top=1pt, bottom=2pt,
-    },
+    coltitle=ufpelDarkBlue,
+    fonttitle=\bfseries,
+    toptitle=2pt, bottomtitle=2pt,
+    colbacktitle=ufpelGold!8,
+    boxed title style={empty},
   ]%
 }{%
   \end{tcolorbox}%
