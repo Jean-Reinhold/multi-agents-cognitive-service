@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+
+\sloppy
+
+\title{Sistemas Multi-Agentes Cognitivos Baseados em LLMs\\para Resolução Colaborativa de Tarefas}
+
+\author{Jean Reinhold\inst{1}}
+
+\address{Centro de Desenvolvimento Tecnológico (CDTec)\\
+  Universidade Federal de Pelotas (UFPel)\\
+  Pelotas -- RS -- Brasil
+  \email{jreinhold@inf.ufpel.edu.br}
+}
+
+\begin{document}
+
+\maketitle
+
+% ===========================================================================
+% RESUMO (em português)
+% ===========================================================================
+\begin{resumo}
+% TODO: Escrever o resumo em português (150-200 palavras).
+% Deve conter: contexto do problema, objetivo do trabalho, metodologia
+% utilizada, principais resultados/contribuições e conclusão.
+% Exemplo de estrutura:
+% - Contexto: Sistemas multi-agentes baseados em LLMs emergem como solução...
+% - Objetivo: Este trabalho analisa a arquitetura proposta por Silva et al. (2025)...
+% - Metodologia: Realizou-se uma análise crítica da arquitetura...
+% - Resultados: Identificaram-se pontos fortes como... e limitações como...
+% - Conclusão: Propõem-se melhorias em...
+Sistemas multi-agentes baseados em Modelos de Linguagem de Grande Escala (LLMs) têm se destacado como uma abordagem promissora para a resolução colaborativa de problemas complexos. Este trabalho analisa a arquitetura proposta por Silva et al. (2025), que introduz um sistema multi-agente conversacional cognitivo onde um agente orquestrador distribui dinamicamente tarefas entre agentes especializados. Cada agente é equipado com cinco módulos cognitivos: Memória Híbrida, Planejamento, Execução, Percepção e Raciocínio. Realizou-se uma análise crítica da arquitetura, identificando seus pontos fortes --- como a modularidade e o uso de memória compartilhada --- e suas limitações, incluindo desafios de escalabilidade e avaliação. Propõem-se melhorias relacionadas à gestão de memória e aos mecanismos de coordenação entre agentes.
+\end{resumo}
+
+% ===========================================================================
+% ABSTRACT (em inglês)
+% ===========================================================================
+\begin{abstract}
+% TODO: Escrever o abstract em inglês (150-200 palavras).
+% Deve ser a tradução fiel do resumo acima.
+Multi-agent systems powered by Large Language Models (LLMs) have emerged as a promising approach for collaborative complex problem-solving. This work analyzes the architecture proposed by Silva et al. (2025), which introduces a conversational cognitive multi-agent system where an orchestrator agent dynamically distributes tasks among specialized agents. Each agent is equipped with five cognitive modules: Hybrid Memory, Planning, Execution, Perception, and Reasoning. A critical analysis of the architecture was conducted, identifying its strengths --- such as modularity and shared memory usage --- and its limitations, including scalability and evaluation challenges. Improvements related to memory management and inter-agent coordination mechanisms are proposed.
+\end{abstract}
+
+% ===========================================================================
+% 1. INTRODUÇÃO
+% ===========================================================================
+\section{Introdução}
+
+% TODO: Escrever a introdução (aproximadamente 0.5-0.75 página).
+% Estrutura sugerida:
+% 1) Contextualização: apresentar o cenário de sistemas multi-agentes (SMA)
+%    e a emergência de LLMs como controladores de agentes autônomos.
+% 2) Problema: desafios de comunicação, coordenação, consistência
+%    comportamental e gestão de memória em SMA baseados em LLMs.
+% 3) Artigo de referência: apresentar brevemente o trabalho de Silva et al.
+%    (2025) e sua proposta de arquitetura multi-agente cognitiva.
+% 4) Objetivo: declarar o objetivo deste trabalho (analisar criticamente
+%    a arquitetura e propor melhorias).
+% 5) Organização: descrever a estrutura do restante do artigo.
+
+Arquiteturas de sistemas multi-agentes baseadas em Modelos de Linguagem de Grande Escala (LLMs) têm emergido como uma abordagem poderosa para a resolução de problemas complexos, permitindo que múltiplos agentes autônomos operem em um ambiente compartilhado \cite{wang2024survey}. Esses agentes se comunicam, colaboram e coordenam suas ações para alcançar objetivos específicos, tornando tais sistemas particularmente vantajosos em domínios dinâmicos e complexos.
+
+Apesar dos avanços, sistemas multi-agentes baseados em LLMs ainda enfrentam desafios significativos que impactam sua efetividade e escalabilidade. A garantia de comunicação e coordenação fluidas entre agentes, a manutenção de consistência comportamental e a gestão eficaz de memória em ambientes dinâmicos permanecem como questões em aberto \cite{sumers2024cognitive}.
+
+Silva et al. \cite{silva2025llm} propõem uma arquitetura multi-agente inovadora na qual um agente orquestrador distribui dinamicamente tarefas entre agentes cognitivos especializados, denominados \textit{Task-driven Agents}. Cada agente é composto por cinco módulos: Memória Híbrida, Planejamento, Execução, Percepção e Raciocínio. O sistema utiliza uma memória compartilhada e um paradigma conversacional para coordenação.
+
+Este trabalho tem como objetivo analisar criticamente a arquitetura proposta, identificando seus pontos fortes e limitações, e propor melhorias para os mecanismos de coordenação e gestão de memória. O restante do artigo está organizado da seguinte forma: a Seção 2 apresenta o referencial teórico; a Seção 3 descreve a metodologia do artigo de referência; a Seção 4 discute os resultados e propõe melhorias; e a Seção 5 apresenta as conclusões.
+
+% ===========================================================================
+% 2. REFERENCIAL TEÓRICO
+% ===========================================================================
+\section{Referencial Teórico}
+
+% TODO: Escrever o referencial teórico (aproximadamente 0.75-1 página).
+% Tópicos a cobrir:
+% 2.1) Agentes inteligentes: definição clássica de Wooldridge & Jennings (1995),
+%      propriedades (autonomia, reatividade, proatividade, sociabilidade).
+% 2.2) Sistemas Multi-Agentes: conceitos fundamentais (Weiss, 1999;
+%      Russell & Norvig, 2021), coordenação, comunicação, cooperação.
+% 2.3) Arquiteturas cognitivas para agentes de linguagem: framework CoALA
+%      (Sumers et al., 2024) — memória, espaço de ação, tomada de decisão.
+% 2.4) Agentes baseados em LLMs: survey de Wang et al. (2024) —
+%      módulos Profile, Memory, Planning, Action.
+% 2.5) Frameworks multi-agentes: ChatDev (Qian et al., 2024),
+%      CoELA (Zhang et al., 2023) — exemplos de arquiteturas colaborativas.
+
+\subsection{Agentes Inteligentes e Sistemas Multi-Agentes}
+
+Um agente inteligente é uma entidade computacional autônoma capaz de perceber seu ambiente e agir sobre ele de forma a alcançar seus objetivos \cite{wooldridge1995intelligent}. Wooldridge e Jennings definem quatro propriedades fundamentais: autonomia, reatividade, proatividade e habilidade social. Sistemas Multi-Agentes (SMA) estendem essa definição ao considerar múltiplos agentes interagindo em um ambiente compartilhado, onde a coordenação, comunicação e cooperação são essenciais \cite{weiss1999multiagent, russell2021artificial}.
+
+\subsection{Arquiteturas Cognitivas e Agentes Baseados em LLMs}
+
+Sumers et al. \cite{sumers2024cognitive} propuseram o framework CoALA (\textit{Cognitive Architectures for Language Agents}), que estrutura agentes de linguagem com base em princípios de arquiteturas cognitivas. O CoALA define agentes ao longo de três dimensões: memória (de trabalho, episódica, semântica e procedural), espaço de ação e tomada de decisão.
+
+Wang et al. \cite{wang2024survey} apresentam uma revisão sistemática de agentes autônomos baseados em LLMs, introduzindo um framework unificado com quatro módulos: \textit{Profile}, \textit{Memory}, \textit{Planning} e \textit{Action}. Tais frameworks fornecem bases teóricas para o desenvolvimento de agentes mais adaptativos e conscientes de memória.
+
+\subsection{Frameworks Multi-Agentes Colaborativos}
+
+Qian et al. \cite{qian2024chatdev} propuseram o \textit{ChatDev}, um framework de desenvolvimento de software baseado em chat onde múltiplos agentes LLM com papéis predefinidos colaboram iterativamente. Zhang et al. \cite{zhang2023building} introduziram o CoELA (\textit{Cooperative Embodied Language Agent}), projetado para agentes corporificados com integração de LLMs para raciocínio e geração de linguagem. Ambos os exemplos demonstram o potencial da integração de LLMs com componentes cognitivos para aprimorar a colaboração entre agentes \cite{becker2024multi}.
+
+% ===========================================================================
+% 3. METODOLOGIA
+% ===========================================================================
+\section{Metodologia}
+
+% TODO: Descrever a metodologia (aproximadamente 0.75-1 página).
+% Estrutura sugerida:
+% 3.1) Descrição da arquitetura de Silva et al. (2025):
+%      - Visão geral: Orquestrador + Task-driven Agents + Memória Compartilhada
+%      - Módulos cognitivos: Hybrid Memory, Planning, Execution, Perception, Reasoning
+%      - Tipos de memória: Working, Semantic (RAG), Procedural
+%      - Paradigma conversacional "Report" para coordenação
+% 3.2) Aplicação de caso: cenário financeiro com 3 agentes
+%      (Moderator, Financial, Coder) usando LangGraph e OpenSearch
+% 3.3) Metodologia de análise: como o presente trabalho analisa
+%      a arquitetura (critérios de avaliação, comparação com literatura)
+
+\subsection{Arquitetura Proposta por Silva et al.}
+
+A arquitetura proposta por Silva et al. \cite{silva2025llm} consiste em um sistema multi-agente onde agentes cognitivos autônomos, denominados \textit{Task-driven Agents}, colaboram para resolver problemas complexos. O sistema é composto por três elementos principais: (i) um agente Orquestrador, responsável por distribuir tarefas e mediar a comunicação; (ii) um conjunto de \textit{Task-driven Agents} especializados; e (iii) uma Memória Compartilhada acessível a todos os agentes.
+
+Cada \textit{Task-driven Agent} possui cinco módulos cognitivos internos. A \textbf{Memória Híbrida} integra memória de curto prazo (\textit{Working Memory}) e longo prazo, incluindo Memória Semântica (baseada em RAG --- \textit{Retrieval Augmented Generation} \cite{lewis2021retrieval}) e Memória Procedural. O módulo de \textbf{Planejamento} encapsula a tomada de decisão do agente. A \textbf{Execução} transforma planos em ações concretas utilizando ferramentas externas. A \textbf{Percepção} enriquece o conhecimento do agente a partir do ambiente. O \textbf{Raciocínio} gerencia as interações com o LLM e o código do agente.
+
+\subsection{Aplicação de Caso e Avaliação}
+
+A viabilidade da arquitetura foi demonstrada por meio de uma aplicação envolvendo três agentes: um Agente Moderador (orquestrador), um Agente Financeiro (coleta de dados via \textit{yfinance}) e um Agente de Código (geração de visualizações com \textit{Plotly}). O sistema foi implementado em Python utilizando LangGraph, com gestão de memória via OpenSearch e modelo GPT-4o. O paradigma conversacional \textit{Report} foi utilizado para coordenação entre agentes.
+
+% ===========================================================================
+% 4. RESULTADOS E DISCUSSÕES
+% ===========================================================================
+\section{Resultados e Discussões}
+
+% TODO: Discutir resultados e propor melhorias (aproximadamente 0.75-1 página).
+% Estrutura sugerida:
+% 4.1) Pontos fortes da arquitetura:
+%      - Modularidade e escalabilidade (agentes task-driven vs. behavior-driven)
+%      - Memória compartilhada como blackboard
+%      - Uso de personas para especialização
+%      - Paradigma conversacional flexível
+% 4.2) Limitações identificadas:
+%      - Avaliação limitada (apenas um cenário de caso)
+%      - Memória compartilhada sem mecanismos de conflito/consistência
+%      - Dependência de um único LLM (GPT-4o)
+%      - Falta de benchmarks padronizados
+% 4.3) Melhorias propostas:
+%      - Implementação de Knowledge Graphs para memória semântica
+%      - Protocolo de comunicação direta entre agentes
+%      - Avaliação com múltiplos cenários e benchmarks
+%      - Estudo ablativo dos módulos cognitivos
+
+\subsection{Pontos Fortes}
+
+A arquitetura apresenta contribuições relevantes. A abordagem de agentes orientados por tarefa (\textit{task-driven}) promove modularidade e escalabilidade, permitindo que novos agentes sejam adicionados sem modificar a estrutura existente. A Memória Compartilhada funciona como um \textit{blackboard}, facilitando a troca de informações entre agentes sem comunicação direta. Além disso, a integração de múltiplos tipos de memória (Working, Semantic e Procedural) alinha-se com frameworks cognitivos estabelecidos como o CoALA \cite{sumers2024cognitive}.
+
+\subsection{Limitações e Melhorias Propostas}
+
+Apesar dos avanços, identificam-se limitações importantes. A avaliação foi conduzida com apenas um cenário de aplicação, o que limita a generalização dos resultados. A Memória Compartilhada não possui mecanismos de resolução de conflitos ou controle de consistência. Ademais, a comunicação entre agentes ocorre exclusivamente via Orquestrador, sem possibilidade de interação direta.
+
+Como melhorias, propõe-se: (i) a incorporação de \textit{Knowledge Graphs} para enriquecer a Memória Semântica, conforme sugerido pelos próprios autores; (ii) a implementação de protocolos de comunicação direta entre agentes para cenários que exijam colaboração intensiva; (iii) a realização de estudos ablativos para avaliar a contribuição individual de cada módulo cognitivo; e (iv) a avaliação da arquitetura com múltiplos cenários e \textit{benchmarks} padronizados para validar sua generalidade.
+
+% ===========================================================================
+% 5. CONCLUSÕES
+% ===========================================================================
+\section{Conclusões}
+
+% TODO: Escrever as conclusões (aproximadamente 0.25-0.5 página).
+% Estrutura sugerida:
+% - Síntese do que foi apresentado no trabalho
+% - Principais contribuições da análise realizada
+% - Trabalhos futuros: direções de pesquisa identificadas
+%   (benchmarks, Knowledge Graphs, comunicação direta, estudos ablativos)
+
+Este trabalho analisou criticamente a arquitetura multi-agente cognitiva proposta por Silva et al. \cite{silva2025llm}, que introduz um sistema conversacional baseado em LLMs para resolução colaborativa de tarefas. A análise identificou pontos fortes significativos, como a modularidade proporcionada por agentes orientados por tarefa e a integração de múltiplos tipos de memória inspirada em arquiteturas cognitivas \cite{sumers2024cognitive}.
+
+Foram também identificadas oportunidades de melhoria, incluindo a necessidade de avaliação mais abrangente, mecanismos de resolução de conflitos na memória compartilhada e protocolos de comunicação direta entre agentes. Tais melhorias são essenciais para que a arquitetura alcance seu potencial em cenários de maior escala e complexidade.
+
+Como trabalhos futuros, destacam-se a integração de \textit{Knowledge Graphs} para enriquecer a memória semântica dos agentes, o desenvolvimento de \textit{benchmarks} padronizados para avaliação de arquiteturas multi-agentes cognitivas e a investigação de paradigmas alternativos de comunicação entre agentes.
+
+% ===========================================================================
+% REFERÊNCIAS
+% ===========================================================================
+\bibliographystyle{sbc}
+\bibliography{references}
+
+\end{document}
