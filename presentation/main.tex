@@ -1,0 +1,70 @@
+\documentclass[aspectratio=169, 12pt]{beamer}
+
+% ─── Theme ───────────────────────────────────────────────────────────────────
+\usetheme{UFPel}
+
+% ─── Packages ────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\graphicspath{{figures/}}
+
+% ─── Metadata ────────────────────────────────────────────────────────────────
+\title[SMA Cognitivos]{Sistemas Multi-Agentes Cognitivos\\Baseados em LLMs}
+\subtitle{Para Resolução Colaborativa de Tarefas}
+\author[J. Reinhold]{Jean Reinhold}
+\institute[UFPel/CDTec]{%
+  Centro de Desenvolvimento Tecnológico (CDTec)\\
+  Universidade Federal de Pelotas (UFPel)\\[0.5em]
+  \texttt{jreinhold@inf.ufpel.edu.br}
+}
+\date{\today}
+\titlegraphic{%
+  \includegraphics[height=1.2cm]{ufpel-logo}%
+  \hspace{2cm}%
+  \includegraphics[height=1.2cm]{cdtec-logo}%
+}
+
+% ══════════════════════════════════════════════════════════════════════════════
+% DOCUMENT
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% --- Title & Outline ---------------------------------------------------------
+\input{slides/slide01-title}
+\input{slides/slide02-outline}
+
+% --- Introdução ---------------------------------------------------------------
+\section{Introdução}
+\input{slides/slide03-introduction}
+\input{slides/slide04-problem}
+
+% --- Referencial Teórico ------------------------------------------------------
+\section{Referencial Teórico}
+\input{slides/slide05-agents}
+\input{slides/slide06-multi-agent}
+\input{slides/slide07-cognitive-llm}
+
+% --- Metodologia --------------------------------------------------------------
+\section{Metodologia}
+\input{slides/slide08-architecture}
+\input{slides/slide09-agent-roles}
+\input{slides/slide10-cognitive-modules}
+\input{slides/slide11-case-study}
+
+% --- Resultados ---------------------------------------------------------------
+\section{Resultados}
+\input{slides/slide12-strengths}
+\input{slides/slide13-limitations}
+
+% --- Propostas e Conclusão ----------------------------------------------------
+\section{Propostas e Conclusão}
+\input{slides/slide14-future-work}
+\input{slides/slide15-conclusion}
+
+\end{document}

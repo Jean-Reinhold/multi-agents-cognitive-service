@@ -1,0 +1,111 @@
+% beamerthemeUFPel.sty — Custom Beamer theme for UFPel presentations
+% Based on Madrid with official UFPel brand colors
+\mode<presentation>
+
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+
+% ─── Official UFPel Brand Colors ─────────────────────────────────────────────
+\definecolor{ufpelDarkBlue}{RGB}{0,64,143}
+\definecolor{ufpelGold}{RGB}{247,166,0}
+\definecolor{ufpelRed}{RGB}{192,13,13}
+\definecolor{ufpelLightBlue}{RGB}{181,220,241}
+
+% ─── Base Themes ─────────────────────────────────────────────────────────────
+\useinnertheme{rounded}
+\useoutertheme{miniframes}
+
+% ─── Color Palette ───────────────────────────────────────────────────────────
+\setbeamercolor{structure}{fg=ufpelDarkBlue}
+\setbeamercolor{palette primary}{bg=ufpelDarkBlue, fg=white}
+\setbeamercolor{palette secondary}{bg=ufpelDarkBlue!80!black, fg=white}
+\setbeamercolor{palette tertiary}{bg=ufpelDarkBlue!60!black, fg=white}
+\setbeamercolor{palette quaternary}{bg=ufpelGold, fg=ufpelDarkBlue}
+
+% Title page
+\setbeamercolor{title}{fg=white, bg=ufpelDarkBlue}
+\setbeamercolor{title in head/foot}{fg=white, bg=ufpelDarkBlue}
+\setbeamercolor{author in head/foot}{fg=white, bg=ufpelDarkBlue!90!black}
+\setbeamercolor{date in head/foot}{fg=white, bg=ufpelDarkBlue!70!black}
+\setbeamercolor{institute}{fg=ufpelDarkBlue!80}
+
+% Frame title
+\setbeamercolor{frametitle}{fg=white, bg=ufpelDarkBlue}
+\setbeamercolor{framesubtitle}{fg=ufpelGold}
+
+% Blocks
+\setbeamercolor{block title}{bg=ufpelDarkBlue, fg=white}
+\setbeamercolor{block body}{bg=ufpelLightBlue!30, fg=black}
+\setbeamercolor{block title alerted}{bg=ufpelRed, fg=white}
+\setbeamercolor{block body alerted}{bg=ufpelRed!10, fg=black}
+\setbeamercolor{block title example}{bg=ufpelGold, fg=ufpelDarkBlue}
+\setbeamercolor{block body example}{bg=ufpelGold!10, fg=black}
+
+% Items
+\setbeamercolor{item}{fg=ufpelDarkBlue}
+\setbeamercolor{subitem}{fg=ufpelGold}
+\setbeamercolor{itemize item}{fg=ufpelDarkBlue}
+\setbeamercolor{itemize subitem}{fg=ufpelGold}
+\setbeamercolor{enumerate item}{fg=ufpelDarkBlue}
+
+% Section in TOC
+\setbeamercolor{section in toc}{fg=ufpelDarkBlue}
+\setbeamercolor{subsection in toc}{fg=ufpelDarkBlue!70}
+
+% ─── Fonts ───────────────────────────────────────────────────────────────────
+\setbeamerfont{title}{size=\Large, series=\bfseries}
+\setbeamerfont{frametitle}{size=\large, series=\bfseries}
+\setbeamerfont{block title}{size=\normalsize, series=\bfseries}
+\setbeamerfont{footline}{size=\fontsize{7}{9}\selectfont}
+
+% ─── Item Templates ──────────────────────────────────────────────────────────
+\setbeamertemplate{itemize item}{\small$\bullet$}
+\setbeamertemplate{itemize subitem}{\scriptsize$\circ$}
+\setbeamertemplate{itemize subsubitem}{\tiny$\diamond$}
+
+% ─── Remove Navigation Symbols ───────────────────────────────────────────────
+\setbeamertemplate{navigation symbols}{}
+
+% ─── Custom Frame Title with Gold Accent Line ────────────────────────────────
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth, ht=2.5ex, dp=1ex, leftskip=0.5em]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle%
+    \hfill%
+    \ifx\insertframesubtitle\empty\else%
+      {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}%
+    \fi%
+  \end{beamercolorbox}%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth, ht=0.8pt, dp=0pt]{palette quaternary}%
+  \end{beamercolorbox}%
+}
+
+% ─── Custom Footline: [Logo + Author] | [Short Title] | [N/Total] ───────────
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    % Left part: logo + author
+    \begin{beamercolorbox}[wd=.35\paperwidth, ht=2.5ex, dp=1.2ex, leftskip=0.5em, center]{author in head/foot}%
+      \IfFileExists{figures/ufpel-logo.png}{%
+        \raisebox{-0.3ex}{\includegraphics[height=1.8ex]{figures/ufpel-logo.png}}%
+        \hspace{0.5em}%
+      }{}%
+      \usebeamerfont{footline}\insertshortauthor%
+    \end{beamercolorbox}%
+    % Center part: short title
+    \begin{beamercolorbox}[wd=.40\paperwidth, ht=2.5ex, dp=1.2ex, center]{title in head/foot}%
+      \usebeamerfont{footline}\insertshorttitle%
+    \end{beamercolorbox}%
+    % Right part: slide number / total
+    \begin{beamercolorbox}[wd=.25\paperwidth, ht=2.5ex, dp=1.2ex, rightskip=0.5em, right]{date in head/foot}%
+      \usebeamerfont{footline}\insertframenumber{}/\inserttotalframenumber%
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+% ─── Headline: Remove miniframes dots ────────────────────────────────────────
+\setbeamertemplate{headline}{}
+
+\mode<all>
