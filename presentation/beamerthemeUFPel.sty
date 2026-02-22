@@ -1,111 +1,278 @@
-% beamerthemeUFPel.sty — Custom Beamer theme for UFPel presentations
-% Based on Madrid with official UFPel brand colors
+% beamerthemeUFPel.sty — Modern flat Beamer theme for UFPel presentations
+% Inspired by Metropolis/Focus — clean, minimal, professional
 \mode<presentation>
 
 \RequirePackage{tikz}
 \RequirePackage{graphicx}
+\RequirePackage{calc}
+\RequirePackage{etoolbox}
+\RequirePackage[most]{tcolorbox}
 
 % ─── Official UFPel Brand Colors ─────────────────────────────────────────────
 \definecolor{ufpelDarkBlue}{RGB}{0,64,143}
 \definecolor{ufpelGold}{RGB}{247,166,0}
 \definecolor{ufpelRed}{RGB}{192,13,13}
 \definecolor{ufpelLightBlue}{RGB}{181,220,241}
+\definecolor{ufpelGray}{RGB}{100,100,100}
+\definecolor{ufpelLightGray}{RGB}{220,220,220}
 
-% ─── Base Themes ─────────────────────────────────────────────────────────────
-\useinnertheme{rounded}
-\useoutertheme{miniframes}
+% ─── Base: default everything (flat) ─────────────────────────────────────────
+\useinnertheme{default}
+\useoutertheme{default}
 
-% ─── Color Palette ───────────────────────────────────────────────────────────
+% ─── Global Colors ───────────────────────────────────────────────────────────
+\setbeamercolor{normal text}{fg=ufpelGray, bg=white}
 \setbeamercolor{structure}{fg=ufpelDarkBlue}
+\setbeamercolor{alerted text}{fg=ufpelRed}
+\setbeamercolor{example text}{fg=ufpelDarkBlue!70!black}
+
 \setbeamercolor{palette primary}{bg=ufpelDarkBlue, fg=white}
-\setbeamercolor{palette secondary}{bg=ufpelDarkBlue!80!black, fg=white}
-\setbeamercolor{palette tertiary}{bg=ufpelDarkBlue!60!black, fg=white}
-\setbeamercolor{palette quaternary}{bg=ufpelGold, fg=ufpelDarkBlue}
+\setbeamercolor{palette secondary}{bg=ufpelGold, fg=ufpelDarkBlue}
 
 % Title page
-\setbeamercolor{title}{fg=white, bg=ufpelDarkBlue}
-\setbeamercolor{title in head/foot}{fg=white, bg=ufpelDarkBlue}
-\setbeamercolor{author in head/foot}{fg=white, bg=ufpelDarkBlue!90!black}
-\setbeamercolor{date in head/foot}{fg=white, bg=ufpelDarkBlue!70!black}
-\setbeamercolor{institute}{fg=ufpelDarkBlue!80}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=ufpelGold}
+\setbeamercolor{author}{fg=white}
+\setbeamercolor{institute}{fg=white!80}
+\setbeamercolor{date}{fg=white!70}
 
 % Frame title
-\setbeamercolor{frametitle}{fg=white, bg=ufpelDarkBlue}
-\setbeamercolor{framesubtitle}{fg=ufpelGold}
-
-% Blocks
-\setbeamercolor{block title}{bg=ufpelDarkBlue, fg=white}
-\setbeamercolor{block body}{bg=ufpelLightBlue!30, fg=black}
-\setbeamercolor{block title alerted}{bg=ufpelRed, fg=white}
-\setbeamercolor{block body alerted}{bg=ufpelRed!10, fg=black}
-\setbeamercolor{block title example}{bg=ufpelGold, fg=ufpelDarkBlue}
-\setbeamercolor{block body example}{bg=ufpelGold!10, fg=black}
+\setbeamercolor{frametitle}{fg=ufpelDarkBlue, bg=white}
+\setbeamercolor{framesubtitle}{fg=ufpelGray}
 
 % Items
-\setbeamercolor{item}{fg=ufpelDarkBlue}
-\setbeamercolor{subitem}{fg=ufpelGold}
 \setbeamercolor{itemize item}{fg=ufpelDarkBlue}
 \setbeamercolor{itemize subitem}{fg=ufpelGold}
+\setbeamercolor{itemize subsubitem}{fg=ufpelGray}
 \setbeamercolor{enumerate item}{fg=ufpelDarkBlue}
+\setbeamercolor{enumerate subitem}{fg=ufpelGold}
+\setbeamercolor{description item}{fg=ufpelDarkBlue}
 
-% Section in TOC
+% TOC
 \setbeamercolor{section in toc}{fg=ufpelDarkBlue}
-\setbeamercolor{subsection in toc}{fg=ufpelDarkBlue!70}
+\setbeamercolor{subsection in toc}{fg=ufpelGray}
+\setbeamercolor{section number projected}{bg=ufpelDarkBlue, fg=white}
+
+% Footline
+\setbeamercolor{footline}{fg=ufpelGray!60, bg=white}
 
 % ─── Fonts ───────────────────────────────────────────────────────────────────
-\setbeamerfont{title}{size=\Large, series=\bfseries}
-\setbeamerfont{frametitle}{size=\large, series=\bfseries}
+\setbeamerfont{title}{size=\LARGE, series=\bfseries}
+\setbeamerfont{subtitle}{size=\large, series=\mdseries}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{institute}{size=\small}
+\setbeamerfont{date}{size=\small}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\normalsize, series=\mdseries}
 \setbeamerfont{block title}{size=\normalsize, series=\bfseries}
-\setbeamerfont{footline}{size=\fontsize{7}{9}\selectfont}
+\setbeamerfont{footline}{size=\fontsize{6.5}{8}\selectfont}
+\setbeamerfont{section in toc}{series=\bfseries}
+\setbeamerfont{description item}{series=\bfseries}
 
-% ─── Item Templates ──────────────────────────────────────────────────────────
-\setbeamertemplate{itemize item}{\small$\bullet$}
-\setbeamertemplate{itemize subitem}{\scriptsize$\circ$}
-\setbeamertemplate{itemize subsubitem}{\tiny$\diamond$}
+% ─── Item Symbols — clean geometric ─────────────────────────────────────────
+\setbeamertemplate{itemize item}{\raisebox{0.18ex}{\tikz\fill[ufpelDarkBlue] (0,0) circle (0.22ex);}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.15ex}{\tikz\fill[ufpelGold] (0,0) rectangle (0.4ex,0.4ex);}}
+\setbeamertemplate{itemize subsubitem}{\raisebox{0.18ex}{\tikz\draw[ufpelGray, thick] (0,0) circle (0.18ex);}}
+\setbeamertemplate{enumerate item}{\usebeamercolor[bg]{section number projected}\colorbox{bg}{\color{fg}\small\insertenumlabel}}
 
-% ─── Remove Navigation Symbols ───────────────────────────────────────────────
+% ─── Remove Navigation Symbols & Headline ───────────────────────────────────
 \setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
 
-% ─── Custom Frame Title with Gold Accent Line ────────────────────────────────
+% ─── Frame Title — minimal with thin gold accent line ────────────────────────
 \setbeamertemplate{frametitle}{%
   \nointerlineskip%
-  \begin{beamercolorbox}[wd=\paperwidth, ht=2.5ex, dp=1ex, leftskip=0.5em]{frametitle}%
+  \vskip8pt%
+  \begin{beamercolorbox}[wd=\paperwidth, leftskip=1.2em, rightskip=1.2em]{frametitle}%
     \usebeamerfont{frametitle}\insertframetitle%
-    \hfill%
     \ifx\insertframesubtitle\empty\else%
-      {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}%
+      \\[2pt]{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}%
     \fi%
   \end{beamercolorbox}%
   \nointerlineskip%
-  \begin{beamercolorbox}[wd=\paperwidth, ht=0.8pt, dp=0pt]{palette quaternary}%
+  \vskip2pt%
+  \hspace{1.2em}%
+  \tikz\fill[ufpelGold] (0,0) rectangle (3cm, 1.5pt);%
+  \vskip6pt%
+}
+
+% ─── Footline — minimal with progress bar ───────────────────────────────────
+\setbeamertemplate{footline}{%
+  \nointerlineskip%
+  \ifnum\inserttotalframenumber>0%
+    \begin{tikzpicture}[overlay, remember picture]
+      \fill[ufpelLightGray] (0,0) rectangle (\paperwidth, 1.5pt);
+      \fill[ufpelGold] (0,0) rectangle ({\paperwidth*\insertframenumber/\inserttotalframenumber}, 1.5pt);
+    \end{tikzpicture}%
+  \fi%
+  \vskip1pt%
+  \begin{beamercolorbox}[wd=\paperwidth, ht=2.2ex, dp=1ex]{footline}%
+    \hspace{1.2em}%
+    \IfFileExists{figures/ufpel-logo.png}{%
+      \raisebox{-0.3ex}{\includegraphics[height=1.6ex]{figures/ufpel-logo.png}}%
+      \hspace{0.5em}%
+    }{}%
+    \insertshortauthor%
+    \hfill%
+    \insertshorttitle%
+    \hfill%
+    \insertframenumber\,/\,\inserttotalframenumber%
+    \hspace{1.2em}%
   \end{beamercolorbox}%
 }
 
-% ─── Custom Footline: [Logo + Author] | [Short Title] | [N/Total] ───────────
-\setbeamertemplate{footline}{%
-  \leavevmode%
-  \hbox{%
-    % Left part: logo + author
-    \begin{beamercolorbox}[wd=.35\paperwidth, ht=2.5ex, dp=1.2ex, leftskip=0.5em, center]{author in head/foot}%
-      \IfFileExists{figures/ufpel-logo.png}{%
-        \raisebox{-0.3ex}{\includegraphics[height=1.8ex]{figures/ufpel-logo.png}}%
-        \hspace{0.5em}%
-      }{}%
-      \usebeamerfont{footline}\insertshortauthor%
-    \end{beamercolorbox}%
-    % Center part: short title
-    \begin{beamercolorbox}[wd=.40\paperwidth, ht=2.5ex, dp=1.2ex, center]{title in head/foot}%
-      \usebeamerfont{footline}\insertshorttitle%
-    \end{beamercolorbox}%
-    % Right part: slide number / total
-    \begin{beamercolorbox}[wd=.25\paperwidth, ht=2.5ex, dp=1.2ex, rightskip=0.5em, right]{date in head/foot}%
-      \usebeamerfont{footline}\insertframenumber{}/\inserttotalframenumber%
-    \end{beamercolorbox}%
-  }%
-  \vskip0pt%
+% ─── Custom Title Page — full dark blue with gold accent ─────────────────────
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[ufpelDarkBlue] (current page.north west) rectangle (current page.south east);
+    % Gold accent strip at bottom
+    \fill[ufpelGold, opacity=0.9]
+      ([yshift=1.8cm]current page.south west) rectangle
+      ([yshift=2.4cm]current page.south east);
+    % Thin white line above strip
+    \draw[white, line width=0.4pt]
+      ([yshift=2.4cm]current page.south west) --
+      ([yshift=2.4cm]current page.south east);
+  \end{tikzpicture}%
+  %
+  \vskip0.5cm%
+  \begin{center}
+    \inserttitlegraphic%
+  \end{center}
+  \vskip0.3cm%
+  \begin{center}
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}%
+    \ifx\insertsubtitle\empty\else%
+      \\[6pt]{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}%
+    \fi%
+  \end{center}
+  \vfill%
+  \begin{center}
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}%
+    \\[4pt]%
+    {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute}%
+    \\[4pt]%
+    {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}%
+  \end{center}
+  \vskip1cm%
 }
 
-% ─── Headline: Remove miniframes dots ────────────────────────────────────────
-\setbeamertemplate{headline}{}
+% ─── Section Pages — auto-inserted, modern centered layout ───────────────────
+\newcommand{\ufpelsectionpage}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[ufpelDarkBlue] (current page.north west) rectangle (current page.south east);
+    \fill[ufpelGold] ([yshift=-0.48\paperheight]current page.north west)
+      rectangle ([yshift=-0.52\paperheight]current page.north east);
+  \end{tikzpicture}%
+  \vfill%
+  \begin{center}
+    {\fontsize{10}{12}\selectfont\color{ufpelGold}\MakeUppercase{\secname}\par}%
+    \vskip8pt%
+    {\fontsize{22}{26}\selectfont\bfseries\color{white}\insertsection\par}%
+  \end{center}
+  \vfill%
+}
+
+\AtBeginSection[]{%
+  {%
+    \setbeamertemplate{footline}{}%
+    \begin{frame}[plain, noframenumbering]
+      \ufpelsectionpage
+    \end{frame}
+  }%
+}
+
+% ─── Block Environments — modern tcolorbox cards with left accent ────────────
+% Override Beamer blocks with tcolorbox-based versions
+
+% Standard block
+\renewenvironment{block}[1]{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=ufpelLightBlue!12,
+    colframe=ufpelLightBlue!12,
+    borderline west={2.5pt}{0pt}{ufpelDarkBlue},
+    sharp corners,
+    boxrule=0pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt,
+    before skip=4pt, after skip=4pt,
+    fonttitle=\usebeamerfont{block title}\color{ufpelDarkBlue},
+    title={#1},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight},
+    boxed title style={
+      colback=ufpelLightBlue!12,
+      colframe=ufpelLightBlue!12,
+      boxrule=0pt,
+      sharp corners,
+      left=0pt, right=0pt, top=1pt, bottom=2pt,
+    },
+  ]%
+}{%
+  \end{tcolorbox}%
+}
+
+% Alert block
+\renewenvironment{alertblock}[1]{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=ufpelRed!5,
+    colframe=ufpelRed!5,
+    borderline west={2.5pt}{0pt}{ufpelRed},
+    sharp corners,
+    boxrule=0pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt,
+    before skip=4pt, after skip=4pt,
+    fonttitle=\usebeamerfont{block title}\color{ufpelRed},
+    title={#1},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight},
+    boxed title style={
+      colback=ufpelRed!5,
+      colframe=ufpelRed!5,
+      boxrule=0pt,
+      sharp corners,
+      left=0pt, right=0pt, top=1pt, bottom=2pt,
+    },
+  ]%
+}{%
+  \end{tcolorbox}%
+}
+
+% Example block
+\renewenvironment{exampleblock}[1]{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=ufpelGold!8,
+    colframe=ufpelGold!8,
+    borderline west={2.5pt}{0pt}{ufpelGold},
+    sharp corners,
+    boxrule=0pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt,
+    before skip=4pt, after skip=4pt,
+    fonttitle=\usebeamerfont{block title}\color{ufpelDarkBlue},
+    title={#1},
+    attach boxed title to top left={yshift=-\tcboxedtitleheight},
+    boxed title style={
+      colback=ufpelGold!8,
+      colframe=ufpelGold!8,
+      boxrule=0pt,
+      sharp corners,
+      left=0pt, right=0pt, top=1pt, bottom=2pt,
+    },
+  ]%
+}{%
+  \end{tcolorbox}%
+}
+
+% ─── TOC styling — clean numbered sections ───────────────────────────────────
+\setbeamertemplate{section in toc}{%
+  \leavevmode%
+  \usebeamercolor[bg]{section number projected}%
+  \colorbox{bg}{\color{fg}\bfseries\small~\inserttocsectionnumber~}%
+  \hspace{0.5em}%
+  \usebeamercolor[fg]{section in toc}%
+  \usebeamerfont{section in toc}%
+  \inserttocsection\par%
+  \vskip4pt%
+}
 
 \mode<all>
