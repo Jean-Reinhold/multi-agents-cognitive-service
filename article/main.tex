@@ -113,7 +113,7 @@ No \^ambito de frameworks multi-agentes colaborativos, Qian et al. \cite{qian202
 
 \subsection{Vis\~ao Geral}
 
-A arquitetura proposta por Silva et al. \cite{silva2025llm} organiza-se em tr\^es camadas (Figura~\ref{fig:overview}): (i)~uma camada de \textbf{intera\c{c}\~ao com o usu\'ario}, atrav\'es de uma interface conversacional; (ii)~um \textbf{Agente Orquestrador}, respons\'avel por distribuir tarefas e mediar a comunica\c{c}\~ao; e (iii)~um conjunto de \textbf{\textit{Task-driven Agents}} especializados que acessam ferramentas externas e compartilham uma \textbf{Mem\'oria Compartilhada}. Esta \'ultima funciona como um \textit{blackboard}, persistindo dados como DataFrames, fun\c{c}\~oes e objetos gerados pelos agentes.
+A arquitetura proposta por Silva et al. \cite{silva2025llm} organiza-se em tr\^es camadas (Figura~\ref{fig:overview}): (i)~uma camada de \textbf{intera\c{c}\~ao com o usu\'ario}; (ii)~um \textbf{Agente Orquestrador}, respons\'avel por distribuir tarefas e mediar a comunica\c{c}\~ao; e (iii)~\textbf{\textit{Task-driven Agents}} especializados que acessam ferramentas externas e compartilham uma \textbf{Mem\'oria Compartilhada} que funciona como \textit{blackboard}.
 
 \begin{figure}[ht]
 \centering
@@ -154,9 +154,9 @@ A arquitetura proposta por Silva et al. \cite{silva2025llm} organiza-se em tr\^e
   \draw[secondary] (agn.east) -- (tools.west |- agn.east);
 
   % Arrows: agents ↔ memory (from group bottom to memory top)
-  \draw[secondary] ($(aggroup.south)+(-0.5,0)$) -- ($(aggroup.south)+(-0.5,0) |- (shmem.north)$);
+  \draw[secondary] ($(aggroup.south)+(-0.5,0)$) -- ($(shmem.north)+(-0.5,0)$);
   \draw[secondary] (aggroup.south) -- (shmem.north);
-  \draw[secondary] ($(aggroup.south)+(0.5,0)$) -- ($(aggroup.south)+(0.5,0) |- (shmem.north)$);
+  \draw[secondary] ($(aggroup.south)+(0.5,0)$) -- ($(shmem.north)+(0.5,0)$);
 \end{tikzpicture}
 \caption{Vis\~ao geral da arquitetura multi-agente proposta por Silva et al.}
 \label{fig:overview}
@@ -168,46 +168,46 @@ Diferentemente de abordagens que agrupam agentes por comportamento comum, Silva 
 
 \begin{figure}[ht]
 \centering
-\begin{tikzpicture}[node distance=0.4cm and 0.5cm]
-  % ── Central: Hybrid Memory (generous size so contents don't overlap) ──
-  \node[memory, minimum width=4.6cm, minimum height=2.0cm] (hybrid) {};
+\begin{tikzpicture}[node distance=0.35cm and 0.45cm]
+  % ── Central: Hybrid Memory (wider to give sub-modules room) ──
+  \node[memory, minimum width=5.2cm, minimum height=1.8cm] (hybrid) {};
   \node[font=\sffamily\scriptsize\bfseries, anchor=north, yshift=-2pt] at (hybrid.north) {Mem\'oria H\'ibrida};
 
-  % Memory sub-components (placed well below the title)
-  \node[memmodule] at ($(hybrid.center)+(-1.5, -0.15)$) (wm) {Trabalho};
+  % Memory sub-components (spread wider, pushed into bottom half)
+  \node[memmodule] at ($(hybrid.center)+(-1.7, -0.15)$) (wm) {Trabalho};
   \node[memmodule] at ($(hybrid.center)+(0, -0.15)$) (sem) {Sem\^antica\\(RAG)};
-  \node[memmodule] at ($(hybrid.center)+(1.5, -0.15)$) (proc) {Procedural};
+  \node[memmodule] at ($(hybrid.center)+(1.7, -0.15)$) (proc) {Procedural};
 
   % ── Surrounding modules ──
-  \node[module, left=0.6cm of hybrid] (percep) {Percep\c{c}\~ao};
-  \node[module, above=0.4cm of hybrid] (plan) {Planejamento};
-  \node[module, right=0.6cm of hybrid] (exec) {Execu\c{c}\~ao};
-  \node[module, below=0.4cm of hybrid, minimum width=1.6cm] (reason) {Racioc\'inio};
+  \node[module, left=0.5cm of hybrid] (percep) {Percep\c{c}\~ao};
+  \node[module, above=0.35cm of hybrid] (plan) {Planejamento};
+  \node[module, right=0.5cm of hybrid] (exec) {Execu\c{c}\~ao};
+  \node[module, below=0.35cm of hybrid, minimum width=1.5cm] (reason) {Racioc\'inio};
 
   % ── LLM and Agent Code ──
-  \node[external, below left=0.3cm and 0.2cm of reason, minimum width=0.9cm] (llm) {LLM};
-  \node[external, below right=0.3cm and 0.2cm of reason, minimum width=0.9cm] (code) {C\'odigo\\do Agente};
+  \node[external, below left=0.25cm and 0.15cm of reason, minimum width=0.8cm] (llm) {LLM};
+  \node[external, below right=0.25cm and 0.15cm of reason, minimum width=0.8cm] (code) {C\'odigo\\do Agente};
 
-  % ── External tools box ──
-  \node[external, right=0.5cm of exec] (exttools) {Ferramentas\\Externas};
+  % ── Agent boundary (excludes exttools) ──
+  \begin{scope}[on background layer]
+    \node[draw, densely dashed, rounded corners=5pt, fill=blue!2,
+          fit=(percep)(plan)(exec)(reason)(hybrid)(llm)(code),
+          inner sep=7pt,
+          label={[font=\sffamily\tiny\bfseries, anchor=south east]north east:Task-driven Agent}] (agentbox) {};
+  \end{scope}
+
+  % ── External tools box (outside agent boundary) ──
+  \node[external, right=0.35cm of agentbox.east |- exec] (exttools) {Ferramentas\\Externas};
 
   % ── Arrows ──
   \draw[dataflow] (percep) -- (hybrid);
   \draw[dataflow] (hybrid) -- (plan);
-  \draw[dataflow] (plan.east) -- ++(0.3,0) |- (exec.north);
+  \draw[dataflow] (plan.east) -- ++(0.25,0) |- (exec.north);
   \draw[dataflow] (hybrid) -- (exec);
   \draw[dataflow] (hybrid) -- (reason);
   \draw[secondary] (reason) -- (llm);
   \draw[secondary] (reason) -- (code);
   \draw[secondary] (exec) -- (exttools);
-
-  % ── Agent boundary ──
-  \begin{scope}[on background layer]
-    \node[draw, densely dashed, rounded corners=5pt, fill=blue!2,
-          fit=(percep)(plan)(exec)(reason)(hybrid)(llm)(code)(exttools),
-          inner sep=8pt,
-          label={[font=\sffamily\tiny\bfseries, anchor=south east]north east:Task-driven Agent}] {};
-  \end{scope}
 \end{tikzpicture}
 \caption{Estrutura interna de um agente cognitivo (\textit{Task-driven Agent}).}
 \label{fig:agent}
@@ -215,7 +215,7 @@ Diferentemente de abordagens que agrupam agentes por comportamento comum, Silva 
 
 \subsection{Aplica\c{c}\~ao Financeira}
 
-A viabilidade da arquitetura foi demonstrada em um cen\'ario financeiro implementado em Python com LangGraph e GPT-4o, envolvendo tr\^es agentes (Figura~\ref{fig:report}): o \textbf{Agente Moderador} (MA), que atua como orquestrador; o \textbf{Agente Financeiro} (AF), que coleta dados via API \textit{yfinance}; e o \textbf{Agente de C\'odigo} (AC), que gera visualiza\c{c}\~oes com \textit{Plotly}. A coordena\c{c}\~ao segue o paradigma \textit{Report} \cite{becker2024multi}: cada agente reporta ao Moderador, que decide o pr\'oximo passo. A Mem\'oria Compartilhada armazena progressivamente os artefatos gerados, permitindo que agentes posteriores reutilizem resultados anteriores.
+A viabilidade da arquitetura foi demonstrada em um cen\'ario financeiro (Python, LangGraph, GPT-4o) com tr\^es agentes (Figura~\ref{fig:report}): \textbf{Agente Moderador} (MA), que atua como orquestrador; \textbf{Agente Financeiro} (AF), que coleta dados via \textit{yfinance}; e \textbf{Agente de C\'odigo} (AC), que gera visualiza\c{c}\~oes com \textit{Plotly}. A coordena\c{c}\~ao segue o paradigma \textit{Report} \cite{becker2024multi}: cada agente reporta ao Moderador, que decide o pr\'oximo passo, enquanto a Mem\'oria Compartilhada armazena progressivamente os artefatos gerados.
 
 \begin{figure}[ht]
 \centering
@@ -241,19 +241,19 @@ A viabilidade da arquitetura foi demonstrada em um cen\'ario financeiro implemen
   \node[external, above=0.35cm of af] (yf) {\textit{yfinance}};
   \draw[secondary] (af) -- (yf);
 
-  % ── Shared Memory (title on top, items inside) ──
-  \node[memory, below=0.8cm of ma2, minimum width=6.2cm, minimum height=1.1cm] (shmem) {};
-  \node[font=\sffamily\scriptsize\bfseries, anchor=north, yshift=-2pt] at (shmem.north) {Mem\'oria Compartilhada};
+  % ── Shared Memory (taller box: title on top, items well below) ──
+  \node[memory, below=0.8cm of ma2, minimum width=6.2cm, minimum height=1.4cm] (shmem) {};
+  \node[font=\sffamily\scriptsize\bfseries, anchor=north, yshift=-3pt] at (shmem.north) {Mem\'oria Compartilhada};
 
-  % Memory items (placed below the title)
-  \node[memoryitem] at ($(shmem.center)+(-2.0,-0.1)$) (df) {DataFrames};
-  \node[memoryitem] at ($(shmem.center)+(0,-0.1)$) (fn) {Fun\c{c}\~ao Python};
-  \node[memoryitem] at ($(shmem.center)+(2.0,-0.1)$) (fig) {Gr\'afico Plotly};
+  % Memory items (pushed to bottom half of the box)
+  \node[memoryitem] at ($(shmem.south)+(-2.0, 0.25)$) (df) {DataFrames};
+  \node[memoryitem] at ($(shmem.south)+(0, 0.25)$) (fn) {Fun\c{c}\~ao Python};
+  \node[memoryitem] at ($(shmem.south)+(2.0, 0.25)$) (fig) {Gr\'afico Plotly};
 
-  % Store arrows (separate y-offsets so they don't collide)
-  \draw[storearrow] (af.south) -- ++(0,-0.3) -| (df.north);
-  \draw[storearrow] (ac.south) -- ++(0,-0.15) -| (fn.north);
-  \draw[storearrow] ($(ac.south)+(0.05,0)$) -- ++(0,-0.3) -| (fig.north);
+  % Store arrows (well-separated vertical drops)
+  \draw[storearrow] (af.south) -- ++(0,-0.35) -| (df.north);
+  \draw[storearrow] ($(ac.south)+(-0.08,0)$) -- ++(0,-0.2) -| (fn.north);
+  \draw[storearrow] ($(ac.south)+(0.08,0)$) -- ++(0,-0.45) -| (fig.north);
 \end{tikzpicture}
 \caption{Fluxo de comunica\c{c}\~ao no paradigma \textit{Report} --- aplica\c{c}\~ao financeira.}
 \label{fig:report}
