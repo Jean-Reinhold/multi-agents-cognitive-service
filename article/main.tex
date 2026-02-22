@@ -139,8 +139,8 @@ A arquitetura proposta por Silva et al. \cite{silva2025llm} organiza-se em tr\^e
   % ── External tools ──
   \node[external, right=0.7cm of aggroup] (tools) {Ferramentas\\Externas};
 
-  % ── Shared Memory (spans from orchestrator to agents) ──
-  \node[memory, below=0.5cm of ag2, minimum width=3.8cm, minimum height=0.55cm] (shmem) {Mem\'oria Compartilhada};
+  % ── Shared Memory (positioned below the dashed group box) ──
+  \node[memory, below=0.35cm of aggroup, minimum width=3.8cm, minimum height=0.55cm] (shmem) {Mem\'oria Compartilhada};
 
   % ── Arrows: main flow ──
   \draw[dataflow] (user) -- (orch);
@@ -153,10 +153,10 @@ A arquitetura proposta por Silva et al. \cite{silva2025llm} organiza-se em tr\^e
   \draw[secondary] (ag2.east) -- (tools.west |- ag2.east);
   \draw[secondary] (agn.east) -- (tools.west |- agn.east);
 
-  % Arrows: agents ↔ memory
-  \draw[secondary] (ag1.south) -- (ag1.south |- shmem.north);
-  \draw[secondary] (ag2.south) -- (shmem.north);
-  \draw[secondary] (agn.south) -- (agn.south |- shmem.north);
+  % Arrows: agents ↔ memory (from group bottom to memory top)
+  \draw[secondary] ($(aggroup.south)+(-0.5,0)$) -- ($(aggroup.south)+(-0.5,0) |- (shmem.north)$);
+  \draw[secondary] (aggroup.south) -- (shmem.north);
+  \draw[secondary] ($(aggroup.south)+(0.5,0)$) -- ($(aggroup.south)+(0.5,0) |- (shmem.north)$);
 \end{tikzpicture}
 \caption{Vis\~ao geral da arquitetura multi-agente proposta por Silva et al.}
 \label{fig:overview}
